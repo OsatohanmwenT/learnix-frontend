@@ -1,10 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Poppins, DM_Serif_Text, Hanken_Grotesk} from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+const dmSerif = DM_Serif_Text({
+  variable: "--font-dm-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: "italic"
+});
+
+const hankenGrotesk = Hanken_Grotesk({
+  variable: "--font-hanken",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
 });
 
 const geistMono = Geist_Mono({
@@ -25,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${poppins.variable} ${dmSerif.variable} ${hankenGrotesk.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>
