@@ -61,7 +61,7 @@ export default function PasswordInput({ field }: PasswordInputProps) {
         <div className="relative">
           <Input
             id={id}
-            className="w-full h-auto py-3 shadow-none"
+            className="w-full h-auto py-2 shadow-none"
             placeholder="Password"
             type={isVisible ? "text" : "password"}
             name={field.name}

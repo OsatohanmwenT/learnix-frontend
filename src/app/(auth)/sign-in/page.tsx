@@ -9,6 +9,8 @@ import Link from "next/link";
 import React from "react";
 
 const page = () => {
+
+  
   return (
     <div className="w-full h-screen grid lg:grid-cols-2">
       <div className="flex flex-col items-center justify-between p-10">
@@ -23,7 +25,7 @@ const page = () => {
             </Link>
           </div>
         </div>
-        <div className="w-full max-w-xl mx-auto px-5">
+        <div className="w-full max-w-md mx-auto px-5">
           <h1 className="font-hanken font-bold text-3xl mb-2 text-center">
             Login to your account
           </h1>

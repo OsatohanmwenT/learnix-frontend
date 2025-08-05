@@ -2,8 +2,10 @@ import { Clock, FileBadge } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface Props {
+  id: string;
   title: string;
   thumbnail: string;
   difficulty?: DifficultyType;
@@ -16,6 +18,7 @@ interface Props {
 }
 
 const CourseCard = ({
+  id,
   title,
   thumbnail,
   description,
@@ -70,9 +73,11 @@ const CourseCard = ({
           </div>
         </div>
       </div>
-      <Button className="w-full mt-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold !py-3">
-        View Course
-      </Button>
+      <Link href={`/courses/${id}`}>
+        <Button className="w-full mt-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold !py-3">
+          View Course
+        </Button>
+      </Link>
     </div>
   );
 };

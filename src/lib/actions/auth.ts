@@ -1,20 +1,10 @@
 "use server";
+
 import { config } from "dotenv";
-
-config();
-
 import { LoginSchema, SignUpSchema } from "../schema/auth";
 import { cookies } from "next/headers";
-
-const COOKIE_OPTIONS = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "strict" as const,
-  path: "/",
-};
-
-const ACCESS_TOKEN_COOKIE = "access_token";
-const REFRESH_TOKEN_COOKIE = "refresh_token";
+import { ACCESS_TOKEN_COOKIE, COOKIE_OPTIONS, REFRESH_TOKEN_COOKIE } from "@/config/session";
+config();
 
 export const signIn = async (data: LoginSchema) => {
   try {
@@ -119,13 +109,6 @@ export const signUp = async (data: SignUpSchema) => {
   }
 };
 
-export const getSession = async () => {
-  const cookieStore = await cookies();
-  let accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE)?.value;
-  const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE)?.value;
-  const userData = cookieStore.get("user_data")?.value;
-};
-
 export const signOut = async () => {
   try {
     const cookieStore = await cookies();
@@ -160,44 +143,5 @@ export const signOut = async () => {
       success: false, 
       message: error.message || "Logout failed" 
     };
-  }
-};
-
-export const refreshAccessToken = async () => {
-  const cookieStore = await cookies();
-  try {
-    const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE)?.value;
-
-    if (!refreshToken) {
-      throw new Error("No refresh token available");
-    }
-
-    const response = await fetch(`${process.env.API_URL}/auth/refresh-token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ refreshToken }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.detail || "Token refresh failed");
-    }
-
-    const { accessToken }: { accessToken: string } = await response.json();
-
-    cookieStore.set(ACCESS_TOKEN_COOKIE, accessToken, {
-      ...COOKIE_OPTIONS,
-      maxAge: 15 * 60, // 15 minutes
-    });
-
-    return { success: true, accessToken };
-  } catch (error: any) {
-    cookieStore.delete(ACCESS_TOKEN_COOKIE);
-    cookieStore.delete(REFRESH_TOKEN_COOKIE);
-    cookieStore.delete("user_info");
-
-    return { success: false, message: error.message };
   }
 };

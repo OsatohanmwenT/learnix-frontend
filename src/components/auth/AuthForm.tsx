@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface AuthFormProps<T> {
   mode: AuthMode;
@@ -37,8 +38,14 @@ interface AuthFormProps<T> {
   submitButtonText?: string;
 }
 
-const AuthForm = <T,> ({ mode, onSubmit, submitButtonText }: AuthFormProps<T>) => {
+const AuthForm = <T,>({
+  mode,
+  onSubmit,
+  submitButtonText,
+}: AuthFormProps<T>) => {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const isSignup = mode === "signup";
   const schema = isSignup ? signUpSchema : loginSchema;
   const defaultValues = isSignup
@@ -57,6 +64,13 @@ const AuthForm = <T,> ({ mode, onSubmit, submitButtonText }: AuthFormProps<T>) =
     setIsLoading(true);
     try {
       const res = await onSubmit(data);
+      if (!res.success) {
+        throw new Error(res.message || "An error occurred");
+      }
+
+      const redirectPath = searchParams.get("redirect") || "/";
+      router.replace(redirectPath);
+
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -81,7 +95,7 @@ const AuthForm = <T,> ({ mode, onSubmit, submitButtonText }: AuthFormProps<T>) =
                   <FormControl>
                     <Input
                       placeholder="Enter your first name"
-                      className="w-full h-auto py-3 shadow-none"
+                      className="w-full h-auto py-2 shadow-none"
                       {...field}
                     />
                   </FormControl>
@@ -100,7 +114,7 @@ const AuthForm = <T,> ({ mode, onSubmit, submitButtonText }: AuthFormProps<T>) =
                   <FormControl>
                     <Input
                       placeholder="Enter your last name"
-                      className="w-full h-auto py-3 shadow-none"
+                      className="w-full h-auto py-2 shadow-none"
                       {...field}
                     />
                   </FormControl>
@@ -122,7 +136,7 @@ const AuthForm = <T,> ({ mode, onSubmit, submitButtonText }: AuthFormProps<T>) =
                 <Input
                   placeholder="Email"
                   type="email"
-                  className="w-full h-auto py-3 shadow-none"
+                  className="w-full h-auto py-2 shadow-none"
                   {...field}
                 />
               </FormControl>
