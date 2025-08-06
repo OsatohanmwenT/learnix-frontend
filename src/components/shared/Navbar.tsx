@@ -2,9 +2,7 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { MenuIcon, Search } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 import Logo from "./Logo";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
@@ -18,7 +16,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={cn("p-4 px-5 lg:px-9 xl:px-16 fixed font-hanken z-20 w-full", pathname === "/" ? "bg-neutral-900/80 backdrop-blur-xl border-neutral-200" : "bg-[#002333] border-dark-green")}>
+      <header className={cn("p-3 px-5 lg:px-9 xl:px-16 fixed font-hanken z-20 w-full", pathname === "/" ? "bg-neutral-900/80 backdrop-blur-xl border-neutral-200" : "bg-[#002333] border-dark-green")}>
         <nav className="flex items-center justify-between mx-auto">
           <div className="flex items-center gap-4">
             <div>
@@ -33,18 +31,21 @@ const Navbar = () => {
             <MenuIcon className="size-8" />
           </button>
           <div className="hidden lg:flex items-center space-x-4">
+            <button className="w-fit px-3 text-sm py-1 transition-all rounded-sm text-white hover:border-emerald-400 border-white h-fit border-2">
             <Link
               href="/sign-in"
-              className="bg-[#278576] text-white hover:bg-[#599f93] transition-all px-5 py-2 rounded-3xl font-hanken text-lg"
+              className="bg-transparent font-hanken"
             >
               Sign In
             </Link>
+            </button>
+            <button  className="text-dark-green font-medium transition-all border-2 bg-white border-white hover:bg-emerald-500 hover:border-emerald-500 px-3 py-1 rounded-sm text-sm font-hanken">
             <Link
               href="/sign-up"
-              className="text-[#278576] transition-all border-2 border-[#278576] px-5 py-2 rounded-3xl font-hanken text-lg"
             >
               Get started
             </Link>
+            </button>
           </div>
         </nav>
       </header>

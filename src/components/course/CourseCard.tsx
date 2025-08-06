@@ -7,7 +7,7 @@ import Link from "next/link";
 interface Props {
   id: string;
   title: string;
-  thumbnail: string;
+  thumbnailUrl: string;
   difficulty?: DifficultyType;
   instructorId: string;
   instructorName: string;
@@ -20,7 +20,7 @@ interface Props {
 const CourseCard = ({
   id,
   title,
-  thumbnail,
+  thumbnailUrl,
   description,
   difficulty,
   price,
@@ -37,7 +37,7 @@ const CourseCard = ({
       <div className="rounded-lg overflow-clip">
         <Image
           className="object-cover transition-all duration-500 group-hover:scale-105 rounded-lg w-full h-full"
-          src={thumbnail || "https://placehold.co/600x400.png"}
+          src={thumbnailUrl || "https://placehold.co/600x400.png"}
           alt={title}
           width={400}
           height={300}

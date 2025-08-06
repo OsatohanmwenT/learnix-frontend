@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { fetchCourseById } from "@/lib/actions/courses";
+import { fetchCourseByIdAuthenticated } from "@/lib/actions/courses";
 import {
   BookUser,
   Clock,
@@ -20,12 +20,12 @@ import {
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  const result = await fetchCourseById(id);
+  const result = await fetchCourseByIdAuthenticated(id);
   const course = result?.course;
   const isEnrolled = result?.isEnrolled;
 
   return (
-    <div className="min-h-screen font-hanken bg-[#f7f7fc] pt-20">
+    <div className="min-h-screen font-hanken bg-[#f7f7fc] pt-16">
       <div className="p-5 lg:px-10 border-b xl:px-18 bg-white w-full">
         <CustomBreadCrumb />
       </div>

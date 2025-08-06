@@ -27,6 +27,7 @@ export const signIn = async (data: LoginSchema) => {
 
     cookieStore.set(ACCESS_TOKEN_COOKIE, authData.data.session.accessToken, {
       ...COOKIE_OPTIONS,
+      httpOnly: false, 
       maxAge: 15 * 60, // 15 minutes
     });
 

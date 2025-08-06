@@ -32,11 +32,11 @@ const SearchInput = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={handleKeyPress}
         placeholder="Search courses, topics, instructors..."
-        className="h-auto shadow-none border-3 !text-sm text-white border-white/80 min-w-[500px] py-3 rounded-full w-full"
+        className="h-auto shadow-none !text-sm text-white border-2 border-gray-400 min-w-[400px] py-2.5 rounded-full w-full"
       />
       <Button
         onClick={handleSearch}
-        className="bg-[#278576] hover:bg-[#2a7c6e] absolute h-4 w-8 px-4 py-4 rounded-full right-2"
+        className="bg-[#278576] hover:bg-[#2a7c6e] absolute h-3 w-8 px-4 py-4 rounded-full right-1.5"
       >
         <Search />
       </Button>

@@ -12,7 +12,7 @@ const page = () => {
   const sortBy = searchParams.get("sortBy") || "createdAt";
 
   return (
-    <main className="min-h-screen pt-22 w-full">
+    <main className="min-h-screen pt-18 w-full">
       <div className="flex w-full min-h-[calc(100vh-88px)] px-5 lg:px-9 xl:px-16 py-6 lg:py-8 gap-12">
         <FilterSection />
         <div className="flex flex-col flex-1">

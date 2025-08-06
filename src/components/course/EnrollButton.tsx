@@ -40,20 +40,26 @@ const EnrollButton = ({ id, isEnrolled }: { id: string, isEnrolled: boolean | un
 
       if (!result?.success) {
         toast.error(result.message);
-        const redirectUrl = result.redirectUrl || "/sign-in";
-        const currentPath = window.location.pathname;
-
-        setTimeout(() => {
-          router.push(
-            `${redirectUrl}?redirect=${encodeURIComponent(currentPath)}`
-          );
-        }, 2000);
+        if (result.redirectUrl) {
+          const currentPath = window.location.pathname;
+          setTimeout(() => {
+            router.push(
+              `${result.redirectUrl}?redirect=${encodeURIComponent(currentPath)}`
+            );
+          }, 2000);
         return;
       }
 
-      if(result.paymentUrl) {
-        localStorage.setItem("pendingEnrollment", JSON.stringify({ courseId: id, reference: result.reference}));
+      if (result.paymentUrl) {
+        localStorage.setItem("pendingEnrollment", JSON.stringify({ courseId: id, reference: result.reference }));
         router.push(result.paymentUrl);
+      }
+        return;
+      }
+
+    if (result.paymentUrl) {
+      localStorage.setItem("pendingEnrollment", JSON.stringify({ courseId: id, reference: result.reference }));
+      router.push(result.paymentUrl);
       }
 
       console.log("Enrollment result:", result);

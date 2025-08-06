@@ -73,7 +73,7 @@ const CourseSection = ({
   }
 
   return (
-    <div className="w-full grid grid-cols-1 p-4 pr-0 md:grid-cols-2 xl:grid-cols-3 gap-3">
+    <div className="w-full grid grid-cols-1 p-4 pr-0 md:grid-cols-2 xl:grid-cols-3 gap-y-6 gap-x-4">
       {courses.map((course) => (
         <CourseCard {...course} key={course.id} />
       ))}

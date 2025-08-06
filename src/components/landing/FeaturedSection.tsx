@@ -6,6 +6,10 @@ import { FadeUp, FadeIn, AnimatedCard } from "../ui/animations";
 const FeaturedSection = async () => {
   const { courses } = await fetchCourses({ limit: 3, query: "" });
 
+  if( !courses || courses.length === 0) {
+    return null;
+  }
+
   return (
     <div className="p-5 pb-32 mx-auto bg-gray-100">
       <FadeUp className="text-4xl md:text-5xl font-bold text-center font-poppins my-12">
