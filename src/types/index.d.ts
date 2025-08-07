@@ -7,6 +7,14 @@ interface Tag {
     count: number;
 }
 
+type User = {
+  firstName: string;
+  lastName: string;
+  image: string;
+  email: string;
+  id: string;
+}
+
 type Instructor = {
   id: string;
   firstName: string;
@@ -54,6 +62,63 @@ interface FetchCourseByIdResponse {
   } | null;
 };
 
+interface QuizAttempt {
+  submissionId: string;
+  quiz: {
+    id: string;
+    title: string;
+    difficulty: string;
+    passingScore: number;
+    timeLimit: number;
+  };
+  attempt: {
+    number: number;
+    score: number;
+    percentageScore: number;
+    isPassed: boolean;
+    submittedAt: string;
+  };
+}
+
+interface QuizAttemptsResponse {
+  attempts: QuizAttempt[];
+  summary: {
+    totalAttempts: number;
+    passedAttempts: number;
+    passRate: number;
+    averageScore: number;
+  };
+}
+
+interface FetchEnrolledCoursesParams {
+  page?: number;
+  limit?: number;
+}
+
+interface EnrolledCourse {
+  id: string;
+  title: string;
+  thumbnailUrl: string | null;
+  progress: number;
+  completedLessons: number;
+  totalLessons: number;
+  instructorName: string;
+  enrolledAt: string;
+  completedAt: string | null;
+}
+
+interface EnrolledCoursesResponse {
+  courses: EnrolledCourse[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalCourses: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    limit: number;
+  };
+}
+
 type FetchCourseByIdResponse = {
   course: Course | null;
   isEnrolled: boolean;
@@ -67,3 +132,45 @@ interface FetchCourseResponse {
 }
 
 type AuthMode = "login" | "signup";
+
+interface EnrolledCourse {
+  id: string;
+  title: string;
+  thumbnailUrl: string | null;
+  progress: number;
+  completedLessons: number;
+  totalLessons: number;
+  instructorName: string;
+  enrolledAt: string;
+  completedAt: string | null;
+}
+
+interface RecentQuiz {
+  id: string;
+  title: string;
+  courseName: string;
+  score: number;
+  totalQuestions: number;
+  correctAnswers: number;
+  timeSpent: number;
+  completedAt: string;
+  difficulty: string;
+}
+
+interface QuizAttempt {
+  submissionId: string;
+  quiz: {
+    id: string;
+    title: string;
+    difficulty: string;
+    passingScore: number;
+    timeLimit: number;
+  };
+  attempt: {
+    number: number;
+    score: number;
+    percentageScore: number;
+    isPassed: boolean;
+    submittedAt: string;
+  };
+}

@@ -2,7 +2,7 @@
 
 import { config } from "dotenv";
 import { redirect } from "next/navigation";
-import { getAccessTokenWithRefresh } from "./session";
+import { getValidAccessToken } from "./session";
 
 config();
 
@@ -102,7 +102,7 @@ export const fetchCourseByIdAuthenticated = async (
     // Try to get access token, but don't fail if it's not available
     let accessToken: string | null = null;
     try {
-      const token = await getAccessTokenWithRefresh();
+      const token = await getValidAccessToken();
       accessToken = token || null;
     } catch (tokenError) {
       console.warn(
@@ -173,7 +173,7 @@ export const initiateEnrollment = async (
   callbackUrl: string
 ) => {
   try {
-    const accessToken = await getAccessTokenWithRefresh();
+    const accessToken = await getValidAccessToken();
 
     if (!accessToken) {
       return {
@@ -224,7 +224,7 @@ export const initiateEnrollment = async (
 // Server action for completing enrollment after payment
 export const completeEnrollment = async (reference: string) => {
   try {
-    const accessToken = await getAccessTokenWithRefresh();
+    const accessToken = await getValidAccessToken();
 
     if (!accessToken) {
       redirect("/sign-in");
@@ -277,7 +277,7 @@ export const createCourse = async (courseData: {
   price?: number;
 }) => {
   try {
-    const accessToken = await getAccessTokenWithRefresh();
+    const accessToken = await getValidAccessToken();
 
     if (!accessToken) {
       return {

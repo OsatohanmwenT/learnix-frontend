@@ -22,7 +22,6 @@ export const signIn = async (data: LoginSchema) => {
     }
 
     const authData = await response.json();
-    console.log(authData)
     const cookieStore = await cookies();
 
     cookieStore.set(ACCESS_TOKEN_COOKIE, authData.data.session.accessToken, {
@@ -41,7 +40,10 @@ export const signIn = async (data: LoginSchema) => {
       JSON.stringify({
         id: authData.data.user.id,
         email: authData.data.user.email,
-        name: authData.data.user.name,
+        username: authData.data.user.username,
+        firstName: authData.data.user.firstname,
+        lastName: authData.data.user.lastname,
+        role: authData.data.user.role,
       }),
       {
         ...COOKIE_OPTIONS,

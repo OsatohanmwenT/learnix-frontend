@@ -1,13 +1,16 @@
 "use client";
 
 import React from "react";
+import { cn } from "@/lib/utils"
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Search } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 const SearchInput = () => {
   const router = useRouter();
+  const pathname = usePathname();
+  const segments = pathname.split("/")
   const query = useSearchParams().get("query") || "";
   const [searchQuery, setSearchQuery] = React.useState(query);
 
@@ -32,7 +35,7 @@ const SearchInput = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={handleKeyPress}
         placeholder="Search courses, topics, instructors..."
-        className="h-auto shadow-none !text-sm text-white border-2 border-gray-400 min-w-[400px] py-2.5 rounded-full w-full"
+        className={cn("h-auto shadow-none !text-sm border-2 min-w-[400px] py-2.5 rounded-full w-full", segments[1] === "learn" ? "border-neutral-200 text-black" : "border-gray-400 text-white")}
       />
       <Button
         onClick={handleSearch}

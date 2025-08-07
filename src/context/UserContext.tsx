@@ -1,25 +1,31 @@
 // context/UserContext.tsx
-"use client"
-import React, { createContext, useContext, useState, useEffect } from "react"
+"use client";
+import React, { createContext, useContext, useState } from "react";
 
-type User = { name: string; email: string; id: string } | null
-
-const UserContext = createContext<{ user: User }>({ user: null })
+const UserContext = createContext<{
+  user: User | null;
+}>({
+  user: null,
+});
 
 export const UserContextProvider = ({
   children,
   initialUser,
 }: {
-  children: React.ReactNode
-  initialUser: User
+  children: React.ReactNode;
+  initialUser: User;
 }) => {
-  const [user, setUser] = useState<User>(initialUser)
+  const [user, setUser] = useState<User>(initialUser);
 
   return (
-    <UserContext.Provider value={{ user }}>
+    <UserContext.Provider
+      value={{
+        user,
+      }}
+    >
       {children}
     </UserContext.Provider>
-  )
-}
+  );
+};
 
-export const useUser = () => useContext(UserContext)
+export const useUser = () => useContext(UserContext);

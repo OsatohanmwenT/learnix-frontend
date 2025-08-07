@@ -55,7 +55,7 @@ const Logo: React.FC<LogoProps> = ({
       <div className="flex flex-col">
         <span
           className={`font-poppins text-2xl tracking-wide !text-emerald-500 font-medium leading-none`}
-          // style={{ color: colors.text }}
+          style={{ color: colors.text }}
         >
           Learnix
         </span>

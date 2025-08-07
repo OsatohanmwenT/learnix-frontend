@@ -1,33 +1,63 @@
 "use server";
-
 import {
   ACCESS_TOKEN_COOKIE,
-  COOKIE_OPTIONS,
   REFRESH_TOKEN_COOKIE,
 } from "@/config/session";
 import { cookies } from "next/headers";
 import { config } from "dotenv";
+import { redirect } from "next/navigation";
 
 config();
 
-export async function getAccessTokenWithRefresh() {
+// Helper function to check if JWT token is expired
+function isTokenExpired(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const currentTime = Math.floor(Date.now() / 1000);
+    // Add a small buffer (30 seconds) to refresh before actual expiration
+    return payload.exp <= (currentTime + 30);
+  } catch (error) {
+    console.error("Error parsing token:", error);
+    return true; // If we can't parse it, consider it expired
+  }
+}
+
+export async function getValidAccessToken(): Promise<any> {
   const cookieStore = await cookies();
-  let accessToken = cookieStore.get("access_token")?.value;
+  let accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE)?.value;
   
-  // Check if token exists and is not expired
+  // If token exists and is not expired, return it
   if (accessToken && !isTokenExpired(accessToken)) {
     return accessToken;
   }
 
-  // Token is missing or expired, try to refresh
-  const result = await refreshAccessToken();
-  console.log("Refresh result:", result);
+  // Token is missing or expired, check if we have refresh token
+  const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE)?.value;
   
-  if (result.success) {
-    return result.accessToken;
+  if (!refreshToken) {
+    console.log("No refresh token available, redirecting to sign-in");
+    redirect("/sign-in");
   }
-  
-  return null;
+
+  // Call the refresh route handler
+  try {
+    const refreshResponse = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/refresh`, {
+      method: 'POST',
+      headers: {
+        'Cookie': `${REFRESH_TOKEN_COOKIE}=${refreshToken}`,
+      },
+    });
+
+    if (!refreshResponse.ok) {
+      console.log("Token refresh failed, redirecting to sign-in");
+      throw new Error("Token refresh failed");
+    }
+
+    const { accessToken: newAccessToken } = await refreshResponse.json();
+    return newAccessToken;
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+  }
 }
 
 export const getSession = async () => {
@@ -43,78 +73,44 @@ export const getSession = async () => {
   };
 };
 
-export const refreshAccessToken = async () => {
-  const cookieStore = await cookies();
-  
-  try {
-    const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE)?.value;
-    console.log("Attempting token refresh...");
-    
-    if (!refreshToken) {
-      throw new Error("No refresh token available");
-    }
-
-    const response = await fetch(`${process.env.API_URL}/auth/refresh-token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ refreshToken }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.detail || `Token refresh failed: ${response.status}`);
-    }
-
-    const { data } = await response.json();
-    
-    // Set new access token
-    cookieStore.set(ACCESS_TOKEN_COOKIE, data.accessToken, {
-      ...COOKIE_OPTIONS,
-      maxAge: 15 * 60, // 15 minutes
-    });
-
-    // Update refresh token if provided
-    if (data.refreshToken) {
-      cookieStore.set(REFRESH_TOKEN_COOKIE, data.refreshToken, {
-        ...COOKIE_OPTIONS,
-        maxAge: 60 * 60 * 24 * 30, // 30 days
-      });
-    }
-
-    console.log("Token refresh successful");
-    return { success: true, accessToken: data.accessToken };
-    
-  } catch (error: any) {
-    console.error("Token refresh failed:", error.message);
-    
-    // Clear all authentication cookies on failure
-    cookieStore.delete(ACCESS_TOKEN_COOKIE);
-    cookieStore.delete(REFRESH_TOKEN_COOKIE);
-    cookieStore.delete("user_info");
-    
-    return { success: false, message: error.message };
-  }
-};
-
-// Helper function to check if JWT token is expired
-function isTokenExpired(token: string): boolean {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const currentTime = Math.floor(Date.now() / 1000);
-    // Add a small buffer (30 seconds) to refresh before actual expiration
-    return payload.exp <= (currentTime + 30);
-  } catch (error) {
-    console.error("Error parsing token:", error);
-    return true; // If we can't parse it, consider it expired
-  }
-}
-
-// Additional utility function for client-side usage
 export const clearSession = async () => {
   const cookieStore = await cookies();
   cookieStore.delete(ACCESS_TOKEN_COOKIE);
   cookieStore.delete(REFRESH_TOKEN_COOKIE);
   cookieStore.delete("user_info");
 };
+
+// Server Action for manual token refresh (can be called from client)
+export async function refreshTokensAction() {
+  try {
+    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/refresh`, {
+      method: 'POST',
+    });
+
+    if (!response.ok) {
+      return { success: false, error: "Token refresh failed" };
+    }
+
+    const data = await response.json();
+    return { success: true, accessToken: data.accessToken };
+  } catch (error) {
+    return { success: false, error: "Network error during token refresh" };
+  }
+}
+
+// Alternative approach: Read-only token getter
+export async function getCurrentAccessToken(): Promise<string | null> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE)?.value;
+  
+  if (!accessToken) {
+    return null;
+  }
+
+  // Check if token is expired
+  if (isTokenExpired(accessToken)) {
+    return null;
+  }
+
+  return accessToken;
+}
