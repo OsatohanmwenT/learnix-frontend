@@ -16,16 +16,19 @@ const Navbar = () => {
   const pathname = usePathname();
   const segments = pathname.split("/");
   const { user } = useUser();
+  console.log(user);
 
   return (
     <>
       <header
         className={cn(
-          "p-3 px-5 lg:px-9 xl:px-16 fixed font-hanken border-b z-20 w-full",
+          "p-4 lg:p-3 px-5 lg:px-9 fixed font-hanken border-b z-100 w-full",
           pathname === "/"
-            ? "bg-neutral-900 backdrop-blur-xl border-neutral-900"
+            ? "bg-neutral-900 xl:px-16 backdrop-blur-xl border-neutral-900"
             : "bg-[#002333] border-dark-green",
-          segments[1] === "learn" && "bg-white border-neutral-200 !px-5"
+          segments[1] === "learn" ||
+            (segments[1] === "instructor" &&
+              "bg-white border-neutral-200 !px-5")
         )}
       >
         <nav className="flex items-center justify-between mx-auto">
@@ -58,7 +61,7 @@ const Navbar = () => {
               <button
                 className={cn(
                   "font-medium transition-all border-2 px-3 py-1 rounded-sm font-hanken",
-                  segments[1] === "learn"
+                  segments[1] === "learn" || segments[1] === "instructor"
                     ? "text-neutral-950"
                     : "text-dark-green"
                 )}
@@ -68,8 +71,14 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="hidden lg:flex items-center space-x-3">
-              {segments[1] !== "learn" ? (
-                <Link href="/learn">
+              {segments[1] !== "learn" && segments[1] !== "instructor" ? (
+                <Link
+                  href={
+                    user.role === "instructor" || user.role === "admin"
+                      ? "/instructor"
+                      : "/learn"
+                  }
+                >
                   <Button className="bg-green-400 text-dark-blue font-hanken px-5 rounded-sm font-medium hover:text-white text-sm shadow-none">
                     My Dashboard
                   </Button>

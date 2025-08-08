@@ -1,21 +1,15 @@
-import Footer from '@/components/shared/Footer'
-import Navbar from '@/components/shared/Navbar'
-import { UserContextProvider } from '@/context/UserContext'
-import { getSession } from '@/lib/actions/session'
-import React, { ReactNode } from 'react'
+import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
+import React, { ReactNode } from "react";
 
-const layout = async ({children}: {children: ReactNode}) => {
-  const session = await getSession()
-
+const layout = async ({ children }: { children: ReactNode }) => {
   return (
-    <div className='relative'>
-      <UserContextProvider initialUser={session.user}>
-        <Navbar />
-        {children}
-        <Footer />
-      </UserContextProvider>
+    <div className="relative">
+      <Navbar />
+      {children}
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default layout
+export default layout;

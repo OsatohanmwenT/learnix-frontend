@@ -78,6 +78,7 @@ const page = async () => {
           {recentActivity?.courseProgress.map((course) => (
             <EnrolledCourseCard
               key={course.courseId}
+              id={course.courseId}
               title={course.courseTitle}
               instructorName={course.instructorName}
               thumbnailUrl={course.thumbnailUrl}

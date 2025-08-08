@@ -2,9 +2,9 @@ type DifficultyType = "beginner" | "intermediate" | "advanced" | "expert";
 type CourseStatus = "published" | "draft";
 
 interface Tag {
-    id: string;
-    label: string;
-    count: number;
+  id: string;
+  label: string;
+  count: number;
 }
 
 type User = {
@@ -13,7 +13,8 @@ type User = {
   image: string;
   email: string;
   id: string;
-}
+  role?: "student" | "instructor" | "admin";
+};
 
 type Instructor = {
   id: string;
@@ -60,7 +61,19 @@ interface FetchCourseByIdResponse {
     progressPercentage: number;
     paymentReference: string | null;
   } | null;
-};
+}
+
+interface EnrolledCourse {
+  id: string;
+  title: string;
+  thumbnailUrl: string | null;
+  progress: number;
+  completedLessons: number;
+  totalLessons: number;
+  instructorName: string;
+  enrolledAt: string;
+  completedAt: string | null;
+}
 
 interface QuizAttempt {
   submissionId: string;
@@ -95,18 +108,6 @@ interface FetchEnrolledCoursesParams {
   limit?: number;
 }
 
-interface EnrolledCourse {
-  id: string;
-  title: string;
-  thumbnailUrl: string | null;
-  progress: number;
-  completedLessons: number;
-  totalLessons: number;
-  instructorName: string;
-  enrolledAt: string;
-  completedAt: string | null;
-}
-
 interface EnrolledCoursesResponse {
   courses: EnrolledCourse[];
   pagination: {
@@ -125,25 +126,13 @@ type FetchCourseByIdResponse = {
 };
 
 interface FetchCourseResponse {
-    courses: Course[];
-    total?: number;
-    page?: number;
-    limit?: number;
+  courses: Course[];
+  total?: number;
+  page?: number;
+  limit?: number;
 }
 
 type AuthMode = "login" | "signup";
-
-interface EnrolledCourse {
-  id: string;
-  title: string;
-  thumbnailUrl: string | null;
-  progress: number;
-  completedLessons: number;
-  totalLessons: number;
-  instructorName: string;
-  enrolledAt: string;
-  completedAt: string | null;
-}
 
 interface RecentQuiz {
   id: string;

@@ -1,5 +1,12 @@
 import React from "react";
-import { User, Settings, HelpCircle, BookOpen, LogOut } from "lucide-react";
+import {
+  User,
+  Settings,
+  HelpCircle,
+  BookOpen,
+  LogOut,
+  GraduationCap,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +18,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getInitials } from "@/lib/utils";
 import Link from "next/link";
 
-const UserDropdown = ({user}: {user: User}) => {
+const UserDropdown = ({ user }: { user: User }) => {
+  const isInstructorOrAdmin =
+    user.role === "instructor" || user.role === "admin";
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer" asChild>
@@ -28,6 +38,20 @@ const UserDropdown = ({user}: {user: User}) => {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 font-hanken mt-2">
+        {isInstructorOrAdmin && (
+          <>
+            <DropdownMenuItem asChild>
+              <Link
+                href="/learn"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <GraduationCap className="h-4 w-4" />
+                Learner Dashboard
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuItem asChild>
           <Link
             href="/learn/portfolio"

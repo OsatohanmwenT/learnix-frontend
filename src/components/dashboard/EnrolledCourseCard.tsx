@@ -1,8 +1,10 @@
 import Image from "next/image";
 import React from "react";
 import { Progress } from "../ui/progress";
+import Link from "next/link";
 
 interface EnrolledCourseCardProps {
+  id: string
   title: string;
   instructorName: string;
   thumbnailUrl: string;
@@ -12,6 +14,7 @@ interface EnrolledCourseCardProps {
 }
 
 const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = ({
+  id,
   title,
   instructorName,
   thumbnailUrl,
@@ -20,7 +23,8 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = ({
   numberOfCompletedLessons,
 }) => {
   return (
-    <div className="rounded-lg h-[320px] flex flex-col overflow-hidden border min-w-[200px] sm:min-w-[250px] max-w-[240px] font-hanken border-neutral-200 shadow-sm hover:shadow-md transition-all duration-200 bg-white">
+    <Link href={`/learn/courses/${id}`}>
+    <div className="rounded-lg h-[320px] cursor-pointer flex flex-col overflow-hidden border min-w-[200px] sm:min-w-[250px] max-w-[240px] font-hanken border-neutral-200 shadow-sm hover:shadow-md transition-all duration-200 bg-white">
       <div className="overflow-hidden">
         <Image
           width={350}
@@ -52,6 +56,7 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = ({
         </div>
       </div>
     </div>
+    </Link>
   );
 };
 
