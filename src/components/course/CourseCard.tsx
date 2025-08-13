@@ -1,4 +1,3 @@
-import { Clock, FileBadge } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
@@ -47,11 +46,12 @@ const CourseCard = ({
         <p className="text-sm text-gray-600 font-poppins">
           By {instructorName}
         </p>
+        <p className="font-semibold text-neutral-700 text-2xl">{price}</p>
         <p className="text-sm text-gray-500 font-poppins line-clamp-2 mt-2">
           {smallDescription}
         </p>
 
-        <div className="bg-dark-green/5 w-full text-sm font-poppins p-2 mt-3 flex rounded-lg">
+        {/* <div className="bg-dark-green/5 w-full text-sm font-poppins p-2 mt-3 flex rounded-lg">
           <div className="flex border-r-2 pl-2 w-full px-4 items-center gap-3">
             <FileBadge className="text-dark-green size-5" />
             <div className="flex flex-col items-start">
@@ -70,7 +70,7 @@ const CourseCard = ({
               </span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <Link href={`/courses/${id}`}>
         <Button className="w-full mt-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold !py-3">

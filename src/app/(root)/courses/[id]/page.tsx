@@ -20,21 +20,26 @@ import {
 import RenderDescription from "@/components/rich-editor/RenderDescription";
 import { redirect } from "next/navigation";
 
-const page = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = await params;
+interface PageProps {
+  params: { id: string };
+}
+
+const CourseDetailPage = async ({ params }: PageProps) => {
+  const { id } = params;
   const result = await fetchCourseByIdAuthenticated(id);
   const course = result?.course;
   const isEnrolled = result?.isEnrolled;
-  
+
   if (isEnrolled) {
     redirect(`/learn/`);
   }
-  
-  if (!course) return null;
 
+  if (!course) {
+    return null; // TODO: Replace with NotFound or error boundary
+  }
 
   return (
-    <div className="min-h-screen font-hanken bg-[#f7f7fc] pt-16">
+    <div className="min-h-screen font-hanken bg-[#f1f1f3] pt-16">
       <div className="p-5 lg:px-10 border-b xl:px-18 bg-white w-full">
         <CustomBreadCrumb />
       </div>
@@ -69,10 +74,21 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           <div className="mt-8">
             <h2 className="text-xl font-semibold">About the Course</h2>
             <p className="text-gray-500 text-base mt-4">
-              {course?.smallDescription}
+              {course?.smallDescription || course.description?.slice(0, 240)}
             </p>
-
-            <RenderDescription json={JSON.parse(course.description)} />
+            {/* Safely parse rich description */}
+            {(() => {
+              try {
+                const parsed = JSON.parse(course.description);
+                return <RenderDescription json={parsed} />;
+              } catch {
+                return (
+                  <p className="mt-4 whitespace-pre-line text-sm text-gray-700">
+                    {course.description}
+                  </p>
+                );
+              }
+            })()}
           </div>
           <div className="mt-6">
             <h2 className="text-xl font-semibold mb-4">Course Content</h2>
@@ -139,7 +155,11 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         <div className="h-full border bg-white p-4 rounded-md w-full max-w-[400px]">
           <div className="aspect-video w-full h-fit rounded-lg">
             <Image
-              src={course?.thumbnailUrl || "https://placehold.co/600x400.png"}
+              src={
+                course?.thumbnailUrl ||
+                (course as any)?.thumbnail ||
+                "https://placehold.co/600x400.png"
+              }
               alt={course?.title || ""}
               className="rounded-lg w-full object-cover"
               width={400}
@@ -156,7 +176,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
                 {course?.price ? course.price.toFixed(2) : "299.99"}
               </span>
               <span className="text-lg font-semibold text-gray-600 ml-1">
-                USD
+                NGN
               </span>
             </div>
           </div>
@@ -166,4 +186,4 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   );
 };
 
-export default page;
+export default CourseDetailPage;

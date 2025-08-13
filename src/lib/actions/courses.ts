@@ -12,6 +12,7 @@ interface FetchCoursesParams {
   sortBy?: string;
   difficulty?: string[];
   duration?: string[];
+  category?: string[]; // newly added filter
 }
 
 export const fetchCourses = async ({
@@ -21,6 +22,7 @@ export const fetchCourses = async ({
   sortBy = "createdAt",
   difficulty = [],
   duration = [],
+  category = [],
 }: FetchCoursesParams): Promise<FetchCourseResponse> => {
   try {
     const searchParams = new URLSearchParams();
@@ -36,6 +38,10 @@ export const fetchCourses = async ({
 
     if (duration.length > 0) {
       duration.map((d) => searchParams.append("duration", d));
+    }
+
+    if (category.length > 0) {
+      category.map((c) => searchParams.append("category", c));
     }
 
     const response = await fetch(

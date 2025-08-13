@@ -4,7 +4,7 @@ interface FilterState {
   // Filter selections
   selectedLevels: string[];
   selectedDurations: string[];
-  selectedSubjects: string[];
+  selectedCategories: string[];
   selectedSkills: string[];
 
   // Sort and search
@@ -14,7 +14,7 @@ interface FilterState {
   // Actions
   toggleLevel: (level: string) => void;
   toggleDuration: (duration: string) => void;
-  toggleSubject: (subject: string) => void;
+  toggleCategory: (category: string) => void;
   toggleSkill: (skill: string) => void;
   setSortBy: (sort: string) => void;
   toggleFreeOnly: () => void;
@@ -29,7 +29,7 @@ export const useFilterStore = create<FilterState>((set, get) => ({
   selectedLevels: [],
   selectedTypes: [],
   selectedDurations: [],
-  selectedSubjects: [],
+  selectedCategories: [],
   selectedSkills: [],
   selectedLanguages: [],
   selectedPartners: [],
@@ -76,11 +76,11 @@ export const useFilterStore = create<FilterState>((set, get) => ({
       return { selectedDurations: newSelectedDurations };
     }),
 
-  toggleSubject: (subject) =>
+  toggleCategory: (category) =>
     set((state) => ({
-      selectedSubjects: state.selectedSubjects.includes(subject)
-        ? state.selectedSubjects.filter((s) => s !== subject)
-        : [...state.selectedSubjects, subject],
+      selectedCategories: state.selectedCategories.includes(category)
+        ? state.selectedCategories.filter((s) => s !== category)
+        : [...state.selectedCategories, category],
     })),
 
   toggleSkill: (skill) =>
@@ -98,7 +98,7 @@ export const useFilterStore = create<FilterState>((set, get) => ({
     set({
       selectedLevels: [],
       selectedDurations: [],
-      selectedSubjects: [],
+      selectedCategories: [],
       selectedSkills: [],
       showFreeOnly: false,
     });
@@ -108,6 +108,7 @@ export const useFilterStore = create<FilterState>((set, get) => ({
       const url = new URL(window.location.href);
       url.searchParams.delete("difficulty");
       url.searchParams.delete("duration");
+      url.searchParams.delete("category");
       window.history.replaceState({}, "", url.toString());
     }
   },
@@ -117,7 +118,7 @@ export const useFilterStore = create<FilterState>((set, get) => ({
     return (
       state.selectedLevels.length +
       state.selectedDurations.length +
-      state.selectedSubjects.length +
+      state.selectedCategories.length +
       state.selectedSkills.length +
       (state.showFreeOnly ? 1 : 0)
     );
@@ -142,6 +143,13 @@ export const useFilterStore = create<FilterState>((set, get) => ({
         url.searchParams.delete("duration");
       }
 
+      // Update category parameter
+      if (state.selectedCategories.length > 0) {
+        url.searchParams.set("category", state.selectedCategories.join(","));
+      } else {
+        url.searchParams.delete("category");
+      }
+
       window.history.replaceState({}, "", url.toString());
     }
   },
@@ -151,6 +159,7 @@ export const useFilterStore = create<FilterState>((set, get) => ({
       const url = new URL(window.location.href);
       const difficultyParam = url.searchParams.get("difficulty");
       const durationParam = url.searchParams.get("duration");
+      const categoryParam = url.searchParams.get("category");
 
       const updates: Partial<FilterState> = {};
 
@@ -166,6 +175,13 @@ export const useFilterStore = create<FilterState>((set, get) => ({
           .split(",")
           .filter((duration) => duration.trim() !== "");
         updates.selectedDurations = selectedDurations;
+      }
+
+      if (categoryParam) {
+        const selectedCategories = categoryParam
+          .split(",")
+          .filter((category) => category.trim() !== "");
+        updates.selectedCategories = selectedCategories;
       }
 
       if (Object.keys(updates).length > 0) {

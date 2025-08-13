@@ -33,7 +33,7 @@ export type RecentCourse = {
   id: string;
   title: string;
   smallDescription: string;
-  category: string;
+  category: CourseCategory;
   description: string;
   price: number;
   estimatedHours: number;

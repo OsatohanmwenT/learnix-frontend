@@ -16,7 +16,8 @@ const CourseSection = ({
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { selectedLevels, selectedDurations } = useFilterStore();
+  const { selectedLevels, selectedDurations, selectedCategories } =
+    useFilterStore();
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -29,6 +30,7 @@ const CourseSection = ({
           sortBy,
           difficulty: selectedLevels,
           duration: selectedDurations,
+          category: selectedCategories,
         });
         setCourses(response.courses);
       } catch (error) {
@@ -38,7 +40,7 @@ const CourseSection = ({
       }
     };
     fetchCourses();
-  }, [query, sortBy, selectedLevels, selectedDurations]);
+  }, [query, sortBy, selectedLevels, selectedDurations, selectedCategories]);
 
   if (isLoading) {
     return (
@@ -49,7 +51,6 @@ const CourseSection = ({
       </div>
     );
   }
-
 
   if (courses.length === 0) {
     return (

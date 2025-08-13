@@ -6,7 +6,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Accordion } from "@/components/ui/accordion";
 import { useFilterStore } from "@/stores/filterStore";
-import { COURSE_LEVELS, DURATION_RANGES, SUBJECTS, SKILLS } from "@/constants";
+import {
+  COURSE_LEVELS,
+  DURATION_RANGES,
+  CATEGORIES,
+  SKILLS,
+} from "@/constants";
 import { X, RotateCcw } from "lucide-react";
 import FilterGroup from "./FilterGroup";
 
@@ -14,12 +19,12 @@ const FilterSection = () => {
   const {
     selectedLevels,
     selectedDurations,
-    selectedSubjects,
+    selectedCategories,
     selectedSkills,
     showFreeOnly,
     toggleLevel,
     toggleDuration,
-    toggleSubject,
+    toggleCategory,
     toggleSkill,
     toggleFreeOnly,
     clearAllFilters,
@@ -27,7 +32,7 @@ const FilterSection = () => {
     initializeFromURL,
   } = useFilterStore();
 
-  const [showAllSubjects, setShowAllSubjects] = useState(false);
+  const [showAllCategories, setShowAllCategories] = useState(false);
   const [showAllSkills, setShowAllSkills] = useState(false);
 
   // Initialize filters from URL on component mount
@@ -39,7 +44,6 @@ const FilterSection = () => {
 
   return (
     <div className="max-w-[280px] max-lg:hidden w-full bg-white font-hanken sticky top-[88px] h-[calc(100vh-88px)] overflow-y-auto no-scrollbar pr-2">
-
       <div className="py-4 border-b border-gray-200">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
@@ -79,10 +83,7 @@ const FilterSection = () => {
         </div>
       </div>
 
-      <div
-        className="flex-1 h-[calc(100vh-280px)] no-scrollbar overflow-y-auto py-1 pr-2"
-
-      >
+      <div className="flex-1 h-[calc(100vh-280px)] no-scrollbar overflow-y-auto py-1 pr-2">
         <Accordion
           type="multiple"
           defaultValue={["level", "type"]}
@@ -103,12 +104,12 @@ const FilterSection = () => {
           />
 
           <FilterGroup
-            title="Subject"
-            items={SUBJECTS}
-            selectedItems={selectedSubjects}
-            onToggle={toggleSubject}
-            showAll={showAllSubjects}
-            onToggleShowAll={() => setShowAllSubjects(!showAllSubjects)}
+            title="Category"
+            items={CATEGORIES}
+            selectedItems={selectedCategories}
+            onToggle={toggleCategory}
+            showAll={showAllCategories}
+            onToggleShowAll={() => setShowAllCategories(!showAllCategories)}
           />
 
           <FilterGroup

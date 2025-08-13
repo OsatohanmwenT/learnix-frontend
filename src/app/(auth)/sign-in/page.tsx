@@ -9,8 +9,6 @@ import Link from "next/link";
 import React from "react";
 
 const page = () => {
-
-  
   return (
     <div className="w-full h-screen grid lg:grid-cols-2">
       <div className="flex flex-col items-center justify-between p-10">

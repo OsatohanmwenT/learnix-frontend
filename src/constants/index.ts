@@ -12,15 +12,13 @@ export const DURATION_RANGES: Tag[] = [
   { id: "over-5-hours", label: "Over 5 hours", count: 5486 },
 ];
 
-export const SUBJECTS: Tag[] = [
-  { id: "computer-science", label: "Computer Science", count: 5240 },
-  { id: "data-science", label: "Data Science", count: 4180 },
-  { id: "business", label: "Business", count: 6720 },
-  { id: "health", label: "Health", count: 2890 },
-  { id: "arts-humanities", label: "Arts and Humanities", count: 3450 },
-  { id: "language-learning", label: "Language Learning", count: 1980 },
-  { id: "math-logic", label: "Math and Logic", count: 1650 },
-  { id: "personal-development", label: "Personal Development", count: 2340 },
+// Course categories (formerly SUBJECTS)
+export const CATEGORIES: Tag[] = [
+  { id: "web-development", label: "Web Development", count: 0 },
+  { id: "data-science", label: "Data Science", count: 0 },
+  { id: "business", label: "Business", count: 0 },
+  { id: "health & fitness", label: "Health & Fitness", count: 0 },
+  { id: "photography", label: "Photography", count: 0 },
 ];
 
 export const SKILLS: Tag[] = [

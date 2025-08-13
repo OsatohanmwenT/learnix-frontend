@@ -1,5 +1,5 @@
 import React from "react";
-import { COURSE_LEVELS, SUBJECTS, DURATION_RANGES } from "@/constants";
+import { COURSE_LEVELS, CATEGORIES, DURATION_RANGES } from "@/constants";
 import { useFilterStore } from "@/stores/filterStore";
 import { Badge } from "../ui/badge";
 import { X } from "lucide-react";
@@ -9,11 +9,11 @@ const TagSection = () => {
   const {
     selectedLevels,
     selectedDurations,
-    selectedSubjects,
+    selectedCategories,
     showFreeOnly,
     toggleLevel,
     toggleDuration,
-    toggleSubject,
+    toggleCategory,
     toggleFreeOnly,
     getActiveFiltersCount,
   } = useFilterStore();
@@ -45,13 +45,13 @@ const TagSection = () => {
                 />
               );
             })}
-            {selectedSubjects.map((subject) => {
-              const item = SUBJECTS.find((s) => s.id === subject);
+            {selectedCategories.map((category) => {
+              const item = CATEGORIES.find((c) => c.id === category);
               return (
                 <CustomBadge
-                  key={subject}
+                  key={category}
                   item={item}
-                  onRemove={() => toggleSubject(subject)}
+                  onRemove={() => toggleCategory(category)}
                 />
               );
             })}

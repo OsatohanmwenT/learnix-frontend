@@ -56,16 +56,15 @@ type Module = {
   lessons?: Lesson[];
 };
 
-const Category = [
-  "Web development",
-  "Data science",
-  "Graphic design",
-  "Business",
-  "Music",
-  "Photography",
-  "Science",
-  "Health & Fitness",
-] as const;
+type category =
+  | "Web development"
+  | "Data science"
+  | "Graphic design"
+  | "Business"
+  | "Music"
+  | "Photography"
+  | "Science"
+  | "Health & Fitness";
 
 type Course = {
   id: string;
@@ -74,7 +73,7 @@ type Course = {
   description: string;
   price: number;
   thumbnailUrl: string;
-  category: Category;
+  category: CourseCategory;
   estimatedHours: number;
   status: CourseStatus;
   difficulty: DifficultyType;

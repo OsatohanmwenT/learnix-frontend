@@ -34,7 +34,7 @@ const WhySection = () => {
           </h3>
           <p className="text-center max-w-xs text-neutral-500 font-hanken mt-2">
             Browse through a diverse range of courses tailored to different
-            skills and interests. Use filters like subject.
+            skills and interests. Use filters like category.
           </p>
         </div>
         <div className="absolute max-md:hidden md:left-[28%] 2xl:left-[32%] transform items-center justify-center">
