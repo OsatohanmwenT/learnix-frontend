@@ -17,12 +17,21 @@ import {
   BookOpen,
   ClipboardList,
 } from "lucide-react";
+import RenderDescription from "@/components/rich-editor/RenderDescription";
+import { redirect } from "next/navigation";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const result = await fetchCourseByIdAuthenticated(id);
   const course = result?.course;
   const isEnrolled = result?.isEnrolled;
+  
+  if (isEnrolled) {
+    redirect(`/learn/`);
+  }
+  
+  if (!course) return null;
+
 
   return (
     <div className="min-h-screen font-hanken bg-[#f7f7fc] pt-16">
@@ -60,8 +69,10 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           <div className="mt-8">
             <h2 className="text-xl font-semibold">About the Course</h2>
             <p className="text-gray-500 text-base mt-4">
-              {course?.description}
+              {course?.smallDescription}
             </p>
+
+            <RenderDescription json={JSON.parse(course.description)} />
           </div>
           <div className="mt-6">
             <h2 className="text-xl font-semibold mb-4">Course Content</h2>

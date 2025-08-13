@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -65,15 +66,21 @@ const AuthForm = <T,>({
     try {
       const res = await onSubmit(data);
       if (!res.success) {
-        throw new Error(res.message || "An error occurred");
+        toast.error(
+          res.message || (isSignup ? "Sign up failed" : "Login failed")
+        );
+        return;
       }
 
       const redirectPath = searchParams.get("redirect") || "/";
       router.replace(redirectPath);
 
-      console.log(res);
     } catch (error) {
-      console.log(error);
+      toast.error(
+        isSignup
+          ? "Sign up failed. Please try again."
+          : "Login failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }

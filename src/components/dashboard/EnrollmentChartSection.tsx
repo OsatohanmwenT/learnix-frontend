@@ -55,7 +55,7 @@ const EnrollmentChartSection: React.FC<EnrollmentChartSectionProps> = ({
 
   return (
     <Card
-      className={`bg-white rounded-lg font-hanken border border-neutral-200 shadow-none ${className}`}
+      className={`bg-white rounded-sm font-hanken border border-neutral-200 shadow-none ${className}`}
     >
       <CardHeader className="pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">

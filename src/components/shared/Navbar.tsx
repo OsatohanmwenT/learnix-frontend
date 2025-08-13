@@ -16,13 +16,12 @@ const Navbar = () => {
   const pathname = usePathname();
   const segments = pathname.split("/");
   const { user } = useUser();
-  console.log(user);
 
   return (
     <>
       <header
         className={cn(
-          "p-4 lg:p-3 px-5 lg:px-9 fixed font-hanken border-b z-100 w-full",
+          "p-4 lg:p-3 px-5 lg:px-9 fixed font-hanken border-b z-50 w-full",
           pathname === "/"
             ? "bg-neutral-900 xl:px-16 backdrop-blur-xl border-neutral-900"
             : "bg-[#002333] border-dark-green",

@@ -70,6 +70,7 @@ const page = async () => {
                           course.thumbnailUrl ||
                           "https://placehold.co/600x400.png"
                         }
+                        nextLessonId={course.nextLessonId}
                         progress={course.progress}
                         numberOfLessons={course.totalLessons}
                         numberOfCompletedLessons={course.completedLessons}
@@ -103,6 +104,7 @@ const page = async () => {
                           course.thumbnailUrl ||
                           "https://placehold.co/600x400.png"
                         }
+                        nextLessonId={course.nextLessonId}
                         progress={course.progress}
                         numberOfLessons={course.totalLessons}
                         numberOfCompletedLessons={course.completedLessons}
@@ -140,6 +142,7 @@ const page = async () => {
                         progress={course.progress}
                         numberOfLessons={course.totalLessons}
                         numberOfCompletedLessons={course.completedLessons}
+                        nextLessonId={course.nextLessonId}
                       />
                     ))}
                   </div>

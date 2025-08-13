@@ -79,6 +79,7 @@ const page = async () => {
             <EnrolledCourseCard
               key={course.courseId}
               id={course.courseId}
+              nextLessonId={course.nextLessonId}
               title={course.courseTitle}
               instructorName={course.instructorName}
               thumbnailUrl={course.thumbnailUrl}

@@ -22,7 +22,6 @@ const PaymentCallbackPage = () => {
     const handlePaymentCallback = async () => {
       if (hasHandled) return;
 
-      const paymentStatus = searchParams.get("status");
       const reference = searchParams.get("reference");
       const id = searchParams.get("course_id");
       const name = searchParams.get("course_name");
@@ -32,19 +31,16 @@ const PaymentCallbackPage = () => {
       setHasHandled(true);
 
       try {
-        if (paymentStatus === "success" && reference) {
+        if (reference) {
           await completeEnrollment(reference);
           setStatus("success");
-        } else if (paymentStatus === "failed") {
-          setStatus("failed");
-        } else if (paymentStatus === "cancelled") {
-          setStatus("cancelled");
-        } else {
-          // Treat unknown/missing params as success for dev mode fallback
-          setStatus("success");
+          setTimeout(() => {
+            window.location.href = `/learn/courses/${id}`;
+          }, 1500);
         }
       } catch (error) {
         console.error("Enrollment completion error:", error);
+        router.push(`/courses/${id}`);
         setStatus("error");
         setErrorMessage(
           error instanceof Error
@@ -59,11 +55,10 @@ const PaymentCallbackPage = () => {
 
   useEffect(() => {
     if (status === "success" && courseId) {
-      const timeout = setTimeout(() => {
-        router.push(`/learn/courses/${courseId}`);
-      }, 3000);
-
-      return () => clearTimeout(timeout);
+      // const timeout = setTimeout(() => {
+      //   router.push(`/learn/courses/${courseId}`);
+      // }, 3000);
+      // return () => clearTimeout(timeout);
     }
   }, [status, courseId, router]);
 
@@ -77,7 +72,9 @@ const PaymentCallbackPage = () => {
           actionButton: {
             text: "Start Learning",
             onClick: () =>
-              router.push(courseId ? `/learn/courses/${courseId}` : "/learn"),
+              (window.location.href = courseId
+                ? `/learn/courses/${courseId}`
+                : "/learn"),
           },
         };
       case "failed":

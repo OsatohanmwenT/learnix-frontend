@@ -1,7 +1,6 @@
 "use server";
 
 import { config } from "dotenv";
-import { redirect } from "next/navigation";
 import { getValidAccessToken } from "./session";
 
 config();
@@ -217,7 +216,10 @@ export const initiateEnrollment = async (
     }
   } catch (error: any) {
     console.error("Enrollment error:", error);
-    return { success: false, message: error?.message || "Failed to enroll in course" };
+    return {
+      success: false,
+      message: error?.message || "Failed to enroll in course",
+    };
   }
 };
 
@@ -227,7 +229,11 @@ export const completeEnrollment = async (reference: string) => {
     const accessToken = await getValidAccessToken();
 
     if (!accessToken) {
-      redirect("/sign-in");
+      return {
+        success: false,
+        redirectUrl: "/sign-in",
+        message: "Authentication required to complete enrollment",
+      };
     }
 
     const response = await fetch(
@@ -243,7 +249,11 @@ export const completeEnrollment = async (reference: string) => {
     );
 
     if (response.status === 401) {
-      redirect("/sign-in");
+      return {
+        success: false,
+        redirectUrl: "/sign-in",
+        message: "Authentication required to complete enrollment",
+      };
     }
 
     const data = await response.json();
@@ -254,9 +264,16 @@ export const completeEnrollment = async (reference: string) => {
 
     // Redirect to the course page after successful enrollment
     if (data.data?.course?.id) {
-      redirect(`/courses/${data.data.course.id}`);
+      return {
+        success: true,
+        redirectUrl: `/courses/${data.data.course.id}`,
+      };
     } else {
-      redirect("/courses");
+      return {
+        success: false,
+        redirectUrl: "/courses",
+        message: "Course not found",
+      };
     }
   } catch (error) {
     console.error("Payment completion error:", error);
@@ -269,8 +286,10 @@ export const completeEnrollment = async (reference: string) => {
 // Server action for creating a new course
 export const createCourse = async (courseData: {
   title: string;
+  smallDescription: string;
   description: string;
   estimatedHours: number;
+  category: string;
   thumbnailUrl: string;
   status: CourseStatus;
   difficulty: DifficultyType;
@@ -290,8 +309,10 @@ export const createCourse = async (courseData: {
     const {
       title,
       description,
+      smallDescription,
       estimatedHours,
       thumbnailUrl,
+      category,
       status,
       difficulty,
       price,
@@ -301,8 +322,10 @@ export const createCourse = async (courseData: {
     if (
       !title ||
       !description ||
+      !smallDescription ||
       !estimatedHours ||
       !thumbnailUrl ||
+      !category ||
       !status ||
       !difficulty
     ) {
@@ -318,7 +341,9 @@ export const createCourse = async (courseData: {
       body: JSON.stringify({
         title,
         description,
+        smallDescription,
         estimatedHours,
+        category,
         thumbnailUrl,
         status,
         difficulty,
@@ -350,6 +375,150 @@ export const createCourse = async (courseData: {
     console.error("Course creation error:", error);
     throw new Error(
       error instanceof Error ? error.message : "Failed to create course"
+    );
+  }
+};
+
+// Server action for updating an existing course
+export const updateCourse = async (
+  courseId: string,
+  courseData: {
+    title?: string;
+    description?: string;
+    estimatedHours?: number;
+    category?: string;
+    thumbnailUrl?: string;
+    status?: CourseStatus;
+    difficulty?: DifficultyType;
+    price?: number;
+  }
+) => {
+  try {
+    const accessToken = await getValidAccessToken();
+
+    if (!accessToken) {
+      return {
+        success: false,
+        redirectUrl: "/sign-in",
+        message: "Please log in to update a course",
+      };
+    }
+
+    if (!courseId) {
+      throw new Error("Course ID is required");
+    }
+
+    const response = await fetch(`${process.env.API_URL}/courses/${courseId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(courseData),
+    });
+
+    if (response.status === 401) {
+      return {
+        success: false,
+        redirectUrl: "/sign-in",
+        message: "Authentication required to update a course",
+      };
+    }
+
+    if (response.status === 403) {
+      return {
+        success: false,
+        message: "You don't have permission to update this course",
+      };
+    }
+
+    if (response.status === 404) {
+      return {
+        success: false,
+        message: "Course not found",
+      };
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to update course");
+    }
+
+    const data = await response.json();
+
+    return {
+      success: true,
+      message: "Course updated successfully!",
+      course: data.data,
+    };
+  } catch (error) {
+    console.error("Course update error:", error);
+    throw new Error(
+      error instanceof Error ? error.message : "Failed to update course"
+    );
+  }
+};
+
+// Server action for deleting a course
+export const deleteCourse = async (courseId: string) => {
+  try {
+    const accessToken = await getValidAccessToken();
+
+    if (!accessToken) {
+      return {
+        success: false,
+        redirectUrl: "/sign-in",
+        message: "Please log in to delete a course",
+      };
+    }
+
+    if (!courseId) {
+      throw new Error("Course ID is required");
+    }
+
+    const response = await fetch(`${process.env.API_URL}/courses/${courseId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (response.status === 401) {
+      return {
+        success: false,
+        redirectUrl: "/sign-in",
+        message: "Authentication required to delete a course",
+      };
+    }
+
+    if (response.status === 403) {
+      return {
+        success: false,
+        message: "You don't have permission to delete this course",
+      };
+    }
+
+    if (response.status === 404) {
+      return {
+        success: false,
+        message: "Course not found",
+      };
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to delete course");
+    }
+
+    return {
+      success: true,
+      message: "Course deleted successfully!",
+    };
+  } catch (error) {
+    console.error("Course deletion error:", error);
+    throw new Error(
+      error instanceof Error ? error.message : "Failed to delete course"
     );
   }
 };

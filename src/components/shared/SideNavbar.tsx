@@ -45,8 +45,6 @@ const sections: {
 
 const SideNavbar = () => {
   const pathname = usePathname();
-  const segments = pathname.split("/");
-  console.log("segments", segments);
 
   return (
     <aside className="bg-dark-blue mt-16 w-[280px] h-[calc(100vh-64px)]">

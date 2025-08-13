@@ -25,7 +25,7 @@ const InstructorCourseCard: React.FC<InstructorCourseCardProps> = ({
     totalEnrollments > 0 ? (completedStudents / totalEnrollments) * 100 : 0;
 
   return (
-    <div className="rounded-lg h-[280px] flex flex-col overflow-hidden border min-w-[200px] sm:min-w-[250px] max-w-[240px] font-hanken border-neutral-200 hover:border-neutral-400 transition-all duration-200 bg-white">
+    <div className="rounded-sm h-[280px] flex flex-col overflow-hidden border min-w-[200px] sm:min-w-[250px] max-w-[240px] font-hanken border-neutral-200 hover:border-neutral-400 transition-all duration-200 bg-white">
       <div className="p-3 flex flex-1 flex-col justify-between sm:p-4">
         <div>
           <p className="text-xs sm:text-sm text-gray-500 mb-1">
@@ -63,7 +63,7 @@ const InstructorCourseCard: React.FC<InstructorCourseCardProps> = ({
               <p className="text-xs text-gray-600">{averageProgress}%</p>
             </div>
             <Progress
-              barColor="bg-blue-500"
+              barColor="bg-emerald-400"
               value={averageProgress}
               max={100}
             />

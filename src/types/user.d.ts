@@ -24,6 +24,7 @@ export interface CourseProgress {
   courseTitle: string;
   progressPercentage: number;
   thumbnailUrl: string;
+  nextLessonId: string;
   enrolledAt: Date;
   completedAt: Date | null;
   instructorName: string;
@@ -76,6 +77,7 @@ export interface CourseProgressResult {
   courseTitle: string;
   progressPercentage: number;
   enrolledAt: Date;
+  nextLessonId: string;
   completedAt: Date | null;
   instructorName: string;
   numberOfLessons: number;

@@ -28,3 +28,32 @@ export interface InstructorAnalyticsResponse {
   error?: string;
   redirectUrl?: string;
 }
+
+export type RecentCourse = {
+  id: string;
+  title: string;
+  smallDescription: string;
+  category: string;
+  description: string;
+  price: number;
+  estimatedHours: number;
+  thumbnailUrl: string | null;
+  enrollmentCount: number;
+  status: string; // "published" | "draft"
+  difficulty: string; // e.g., "beginner"
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type FetchRecentCoursesResponse = {
+  success: boolean;
+  message?: string;
+  data?: {
+    courses: RecentCourse[];
+    totalCourses: number;
+    showing: number;
+    limit: number;
+  };
+  redirectUrl?: string;
+  error?: string;
+};

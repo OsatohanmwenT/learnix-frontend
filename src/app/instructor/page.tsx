@@ -2,15 +2,22 @@ import AnalyticsCard from "@/components/dashboard/AnalyticsCard";
 import InstructorCourseCard from "@/components/dashboard/InstructorCourseCard";
 import EnrollmentChartSection from "@/components/dashboard/EnrollmentChartSection";
 import { Button } from "@/components/ui/button";
-import { fetchInstructorAnalytics } from "@/lib/actions/instructor";
+import {
+  fetchInstructorAnalytics,
+  fetchInstructorRecentCourses,
+} from "@/lib/actions/instructor";
 import { InstructorCourse } from "@/types/instructor";
 import { Users, UserCheck, TrendingUp, Target, BookOpen } from "lucide-react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import React from "react";
+import ICourseCard from "@/components/instructor/ICourseCard";
 
 const page = async () => {
-  const analytics = await fetchInstructorAnalytics();
+  const [analytics, recentCourses] = await Promise.all([
+    fetchInstructorAnalytics(),
+    fetchInstructorRecentCourses({ limit: 3 }),
+  ]);
 
   if (analytics.redirectUrl) {
     redirect(analytics.redirectUrl);
@@ -33,7 +40,7 @@ const page = async () => {
   }
 
   const { data } = analytics;
-  console.log(data);
+  console.log(recentCourses.data?.courses)
   const summary = data?.summary;
   const courses = data?.courses || [];
 
@@ -96,6 +103,36 @@ const page = async () => {
         totalValue={summary?.totalEnrollments}
         className="w-full"
       />
+
+      {/* My recent course  */}
+      <div className="bg-white rounded-sm w-full p-4 sm:p-6 border border-neutral-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
+          <h2 className="text-xl sm:text-2xl font-hanken text-neutral-800 font-bold">
+            My Recent Courses
+          </h2>
+          <Link href="/instructor/courses">
+            <Button className="bg-emerald-400 hover:bg-emerald-500 transition-colors w-full sm:w-auto">
+              View all
+            </Button>
+          </Link>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          {recentCourses.data?.courses?.map((c) => (
+            <ICourseCard
+              key={c.id}
+              id={c.id}
+              title={c.title}
+              description={c.smallDescription}
+              thumbnailUrl={c.thumbnailUrl}
+              status={c.status === "published" ? "Published" : "Draft"}
+              duration={`${c.estimatedHours}h`}
+              level={c.difficulty}
+              enrollmentCount={c.enrollmentCount}
+              editHref={`/instructor/courses/edit/${c.id}`}
+            />
+          ))}
+        </div>
+      </div>
 
       {/* My Courses Section */}
       <div className="bg-white rounded-xl w-full p-4 sm:p-6 border border-neutral-200">

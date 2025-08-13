@@ -52,7 +52,7 @@ const InstructorSidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-64 bg-white border-r border-neutral-200 h-screen fixed left-0 top-0 z-40 flex flex-col">
+    <aside className="w-64 bg-white border-r border-neutral-200 h-screen fixed left-0 top-0 z-10 flex flex-col">
       {/* Header */}
       <div className="p-5 border-neutral-200">
         <h2 className="text-xl font-hanken font-bold text-neutral-800">

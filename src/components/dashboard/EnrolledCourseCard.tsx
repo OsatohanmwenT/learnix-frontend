@@ -6,6 +6,7 @@ import Link from "next/link";
 interface EnrolledCourseCardProps {
   id: string
   title: string;
+  nextLessonId: string;
   instructorName: string;
   thumbnailUrl: string;
   progress: number;
@@ -17,13 +18,14 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = ({
   id,
   title,
   instructorName,
+  nextLessonId,
   thumbnailUrl,
   progress,
   numberOfLessons,
   numberOfCompletedLessons,
 }) => {
   return (
-    <Link href={`/learn/courses/${id}`}>
+    <Link href={`/learn/courses/${id}/lessons/${nextLessonId}`}>
     <div className="rounded-lg h-[320px] cursor-pointer flex flex-col overflow-hidden border min-w-[200px] sm:min-w-[250px] max-w-[240px] font-hanken border-neutral-200 shadow-sm hover:shadow-md transition-all duration-200 bg-white">
       <div className="overflow-hidden">
         <Image

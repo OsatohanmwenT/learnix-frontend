@@ -11,7 +11,7 @@ interface Props {
   difficulty?: DifficultyType;
   instructorId: string;
   instructorName: string;
-  description: string;
+  smallDescription: string;
   price?: number;
   status: CourseStatus;
   estimatedHours?: number;
@@ -21,12 +21,11 @@ const CourseCard = ({
   id,
   title,
   thumbnailUrl,
-  description,
+  smallDescription,
   difficulty,
   price,
   status,
   instructorName,
-  instructorId,
   estimatedHours,
 }: Props) => {
   return (
@@ -49,7 +48,7 @@ const CourseCard = ({
           By {instructorName}
         </p>
         <p className="text-sm text-gray-500 font-poppins line-clamp-2 mt-2">
-          {description}
+          {smallDescription}
         </p>
 
         <div className="bg-dark-green/5 w-full text-sm font-poppins p-2 mt-3 flex rounded-lg">

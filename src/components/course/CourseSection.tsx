@@ -15,15 +15,12 @@ const CourseSection = ({
 }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Get filter states from the store
   const { selectedLevels, selectedDurations } = useFilterStore();
 
   useEffect(() => {
     const fetchCourses = async () => {
       setIsLoading(true);
-      setError(null);
       try {
         const response = await fetchAllCourses({
           limit: 100,
@@ -33,12 +30,11 @@ const CourseSection = ({
           difficulty: selectedLevels,
           duration: selectedDurations,
         });
-        setCourses(response.courses); // Fix: Set the courses from response
+        setCourses(response.courses);
       } catch (error) {
         console.error("Error fetching courses:", error);
-        setError("Failed to load courses. Please try again later.");
       } finally {
-        setIsLoading(false); // Fix: Set loading to false
+        setIsLoading(false);
       }
     };
     fetchCourses();
@@ -54,13 +50,6 @@ const CourseSection = ({
     );
   }
 
-  // if (error) {
-  //   return (
-  //     <div className="w-full flex justify-center items-center py-20">
-  //       <CourseCardSkeleton />
-  //     </div>
-  //   );
-  // }
 
   if (courses.length === 0) {
     return (

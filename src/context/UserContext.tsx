@@ -4,8 +4,10 @@ import React, { createContext, useContext, useState } from "react";
 
 const UserContext = createContext<{
   user: User | null;
+  updateUser: (userData: User | null) => void;
 }>({
   user: null,
+  updateUser: () => {},
 });
 
 export const UserContextProvider = ({
@@ -13,14 +15,19 @@ export const UserContextProvider = ({
   initialUser,
 }: {
   children: React.ReactNode;
-  initialUser: User;
+  initialUser: User | null;
 }) => {
-  const [user, setUser] = useState<User>(initialUser);
+  const [user, setUser] = useState<User | null>(initialUser);
+
+  const updateUser = (userData: User | null) => {
+    setUser(userData);
+  };
 
   return (
     <UserContext.Provider
       value={{
         user,
+        updateUser,
       }}
     >
       {children}

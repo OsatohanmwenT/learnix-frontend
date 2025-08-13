@@ -49,7 +49,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <UserContextProvider initialUser={session.user}>
+      <UserContextProvider initialUser={session?.user || null}>
 
       <body
         className={`${geistSans.variable} ${poppins.variable} ${dmSerif.variable} ${hankenGrotesk.variable} ${geistMono.variable} antialiased`}
