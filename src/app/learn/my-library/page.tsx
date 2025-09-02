@@ -128,7 +128,7 @@ const page = async () => {
             <TabsContent value="completed" className="mt-6">
               <div className="bg-transparent">
                 {completedCourses.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {completedCourses.map((course) => (
                       <EnrolledCourseCard
                         id={course.id}

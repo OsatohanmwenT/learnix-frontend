@@ -26,21 +26,6 @@ const sections: {
       },
     ],
   },
-  {
-    heading: "LEARN",
-    items: [
-      {
-        label: "Courses",
-        href: "/learn/courses",
-        icon: <Lightbulb className="size-5" />,
-      },
-      {
-        label: "Assessments",
-        href: "/learn/assessments",
-        icon: <Lightbulb className="size-5" />,
-      },
-    ],
-  },
 ];
 
 const SideNavbar = () => {

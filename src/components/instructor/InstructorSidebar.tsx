@@ -30,11 +30,6 @@ const sidebarItems: SidebarItem[] = [
     icon: <BookOpen className="size-5" />,
   },
   {
-    label: "Analytics",
-    href: "/instructor/analytics",
-    icon: <BarChart3 className="size-5" />,
-  },
-  {
     label: "Quizzes",
     href: "/instructor/quizzes",
     icon: <FileQuestion className="size-5" />,
