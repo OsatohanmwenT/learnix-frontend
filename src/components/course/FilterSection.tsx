@@ -97,28 +97,12 @@ const FilterSection = () => {
           />
 
           <FilterGroup
-            title="Duration"
-            items={DURATION_RANGES}
-            selectedItems={selectedDurations}
-            onToggle={toggleDuration}
-          />
-
-          <FilterGroup
             title="Category"
             items={CATEGORIES}
             selectedItems={selectedCategories}
             onToggle={toggleCategory}
             showAll={showAllCategories}
             onToggleShowAll={() => setShowAllCategories(!showAllCategories)}
-          />
-
-          <FilterGroup
-            title="Skills"
-            items={SKILLS}
-            selectedItems={selectedSkills}
-            onToggle={toggleSkill}
-            showAll={showAllSkills}
-            onToggleShowAll={() => setShowAllSkills(!showAllSkills)}
           />
         </Accordion>
       </div>
