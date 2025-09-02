@@ -40,7 +40,7 @@ const page = () => {
       <div className="relative max-lg:hidden h-screen w-full">
         <div className="absolute inset-0 bg-black/40"></div>
         <Image
-          src="/auth-pic2.jpg"
+          src="/auth-pic1.jpg"
           alt="Auth Background"
           height={1000}
           width={1000}
