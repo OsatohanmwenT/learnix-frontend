@@ -62,7 +62,7 @@ const Navbar = () => {
                   "font-medium transition-all border-2 px-3 py-1 rounded-sm font-hanken",
                   segments[1] === "learn" || segments[1] === "instructor"
                     ? "text-neutral-950"
-                    : "text-dark-green"
+                    : "text-white"
                 )}
               >
                 <Link href="/sign-up">Get started</Link>

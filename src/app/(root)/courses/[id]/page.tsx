@@ -35,7 +35,7 @@ const CourseDetailPage = async ({ params }: PageProps) => {
   }
 
   if (!course) {
-    return null; // TODO: Replace with NotFound or error boundary
+    return null;
   }
 
   return (

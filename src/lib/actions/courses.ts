@@ -229,7 +229,6 @@ export const initiateEnrollment = async (
   }
 };
 
-// Server action for completing enrollment after payment
 export const completeEnrollment = async (reference: string) => {
   try {
     const accessToken = await getValidAccessToken();

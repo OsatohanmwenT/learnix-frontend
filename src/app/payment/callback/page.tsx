@@ -35,7 +35,7 @@ const PaymentCallbackPage = () => {
           await completeEnrollment(reference);
           setStatus("success");
           setTimeout(() => {
-            window.location.href = `/learn/courses/${id}`;
+            window.location.href = `/learn/my-library`;
           }, 1500);
         }
       } catch (error) {
@@ -73,7 +73,7 @@ const PaymentCallbackPage = () => {
             text: "Start Learning",
             onClick: () =>
               (window.location.href = courseId
-                ? `/learn/courses/${courseId}`
+                ? `/learn/my-library}`
                 : "/learn"),
           },
         };

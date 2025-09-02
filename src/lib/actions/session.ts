@@ -36,7 +36,7 @@ export async function getValidAccessToken(): Promise<any> {
   
   if (!refreshToken) {
     console.log("No refresh token available, redirecting to sign-in");
-    redirect("/sign-in");
+    return null;
   }
 
   // Call the refresh route handler

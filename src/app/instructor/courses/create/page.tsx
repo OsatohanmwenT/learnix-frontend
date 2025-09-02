@@ -38,15 +38,16 @@ import {
   status,
 } from "@/lib/schema/course";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const page = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<CreateCourseInput>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
@@ -63,11 +64,12 @@ const page = () => {
   });
 
   const onSubmit = async (data: CreateCourseInput) => {
-    console.log(data);
+    setIsLoading(true);
     try {
       const response = await createCourse(data as CourseSchemaType);
       if (response.success) {
         toast.success("Course created successfully!");
+        router.push(`/instructor/courses/`);
       } else {
         toast.error("Failed to create course.");
         if(response.redirectUrl) {
@@ -76,6 +78,8 @@ const page = () => {
       }
     } catch (error) {
       toast.error("An error occurred while creating the course.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -283,6 +287,7 @@ const page = () => {
                 className="bg-emerald-500 hover:bg-light-green"
                 type="submit"
               >
+                {isLoading && <Loader2 className="animate-spin size-4" />}
                 Create Course
               </Button>
             </form>

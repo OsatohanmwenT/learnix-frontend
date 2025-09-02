@@ -45,7 +45,6 @@ const AuthForm = <T,>({
   submitButtonText,
 }: AuthFormProps<T>) => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
   const isSignup = mode === "signup";
   const schema = isSignup ? signUpSchema : loginSchema;
@@ -72,8 +71,9 @@ const AuthForm = <T,>({
         return;
       }
 
+      toast.success("Authentication successful!");
       const redirectPath = searchParams.get("redirect") || "/";
-      router.replace(redirectPath);
+      window.location.href = redirectPath;
 
     } catch (error) {
       toast.error(
